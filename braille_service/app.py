@@ -6,11 +6,12 @@ from flask import Flask, render_template, request, redirect, url_for
 from image_to_braille import convert_image_to_braille  # 함수 이름 수정
 from bs4 import BeautifulSoup
 import base64
+import cv2
 
 app = Flask(__name__)
 
 # OpenAI API 키 설정
-OPENAI_API_KEY = 'INSERT YOUR KEY'
+OPENAI_API_KEY = 'your key'
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 s3 = boto3.client('s3', region_name='ap-northeast-2')
@@ -70,54 +71,23 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload_mp3():
-    if 'file' not in request.files:
-        return redirect(url_for('index'))
-    file = request.files['file']
-    if file.filename == '':
-        return redirect(url_for('index'))
+    # Lambda 호출 대신 테스트 텍스트 사용
+    transcript_text = """한국 윤석열 대통령이 동남아시아 국가들의 연합인 아세안 정상회의 참석을 계기로 일본의 이시 바 시계로 신임 총리와 첫 정상회담을 가질 예정입니다.
+한일 정상은 이번 회담에서 지난 이천이십이 년 윤석열 정부 출범 이후 개선된 한일 관계의 흐름을 주력할 것으로 보입니다.
+다만 여러 국가들이 모이는 자리를 계기로 성사된 한일 정상회담이기 때문에 구체적인 현안을 논의하기 보단 윤 대통령이 일본의 신임 총리와 처음 만나는 자리로
+서로의 신뢰를 구축하는 데 의미를 둘 전망입니다."""
 
-    file_key = f'uploads/{file.filename}'
-    s3.upload_fileobj(file, bucket_name, file_key)
+    # GPT 호출 대신 테스트 텍스트 요약 사용
+    summarized_text = transcript_text
 
-    response = lambda_client.invoke(
-        FunctionName='mp3-to-text',
-        InvocationType='RequestResponse',
-        Payload=json.dumps({'bucket': bucket_name, 'key': file_key})
-    )
-
-    response_payload = json.loads(response['Payload'].read())
-
-    if 'transcript_text' in response_payload:
-        transcript_text = response_payload['transcript_text']
-        print("원본 텍스트:", transcript_text)
-
-        try:
-            gpt_response = client.chat.completions.create(
-                model="gpt-3.5-turbo-16k",
-                messages=[
-                    {"role": "system", "content": "You are a helpful assistant that summarizes content accurately and concisely."},
-                    {"role": "user", "content": f"다음 텍스트의 주요 내용을 300단어 이내로 요약해주세요:\n\n{transcript_text}"}
-                ],
-                temperature=0.7,
-                max_tokens=1000
-            )
-
-            summarized_text = gpt_response.choices[0].message.content
-            print("GPT 응답:", summarized_text)
-
-            return render_template('index.html', transcript_text=transcript_text, summarized_text=summarized_text, show_editor=True)
-        except Exception as e:
-            print("GPT API 호출 에러:", str(e))
-            return render_template('index.html', error=f"GPT API 호출 에러: {str(e)}")
-    else:
-        error_message = response_payload.get('errorMessage', 'Lambda 함수에서 변환 결과를 찾을 수 없습니다.')
-        return render_template('index.html', error=error_message)
+    return render_template('index.html', transcript_text=transcript_text, summarized_text=summarized_text, show_editor=True)
 
 @app.route('/convert_to_braille', methods=['POST'])
 def convert_to_braille():
     html_content = request.form['text']
     soup = BeautifulSoup(html_content, 'html.parser')
 
+    # 텍스트와 이미지를 순서대로 변환하여 점자 형태로 저장
     text_content = []
     for element in soup.descendants:
         if isinstance(element, str):
@@ -134,13 +104,13 @@ def convert_to_braille():
                 with open(temp_path, 'wb') as f:
                     f.write(image_bytes)
 
-                # 변환 함수 호출 시 이름 수정
+                # 원본 크기 유지하여 이미지 점자 변환
                 braille_image_path = convert_image_to_braille(temp_path)
 
                 # 변환된 이미지를 다시 Base64로 인코딩하여 HTML에 삽입
                 with open(braille_image_path, "rb") as img_file:
                     encoded_string = base64.b64encode(img_file.read()).decode("utf-8")
-                    img_tag = f'<img src="data:image/png;base64,{encoded_string}" alt="Braille Image" style="width: 100px; height: 100px;"/>'
+                    img_tag = f'<img src="data:image/png;base64,{encoded_string}" alt="Braille Image"/>'
                     text_content.append(img_tag)
 
                 # 임시 파일 삭제
@@ -149,6 +119,7 @@ def convert_to_braille():
             else:
                 text_content.append("[이미지]")
 
+    # 변환된 점자 텍스트와 이미지 결과를 HTML로 표시
     braille_text = "\n\n".join(text_content)
     return render_template('index.html', braille_text=braille_text, transcript_text=html_content, show_editor=True)
 

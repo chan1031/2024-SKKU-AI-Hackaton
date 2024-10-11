@@ -15,13 +15,10 @@
         <button type="submit">텍스트로 변환</button>
     </form>
 
-    {% if transcript_text %}
+    {% if summarized_text %}
     <div class="result">
-        <h2>변환된 텍스트:</h2>
-        <form action="/convert_to_braille" method="post">
-            <textarea name="text">{{ transcript_text }}</textarea>
-            <button type="submit">점자 변환</button>
-        </form>
+        <h2>정리된 텍스트:</h2>
+        <p>{{ summarized_text }}</p>
     </div>
     {% endif %}
 

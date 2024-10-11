@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>점자 변환 서비스</title>
+    <link rel="stylesheet" type="text/css" href="style2.css">
+</head>
+<body>
+
+<!-- 로고 이미지 추가 (왼쪽 상단) -->
+<img src="logo_new.png" alt="로고" class="logo">
+
+<!-- 페이지 타이틀 -->
+<h1>점자 변환 서비스</h1>
+
+<!-- 파일 업로드 영역 -->
+<div class="upload-section">
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="file">강의 MP3 파일 업로드:</label>
+        <input type="file" name="file" id="file" accept=".mp3" required>
+        <button type="submit">텍스트로 변환</button>
+    </form>
+</div>
+
+<!-- 좌우로 input과 output을 나눈 컨테이너 -->
+<div class="container">
+    <!-- Input 영역 -->
+    <div class="column">
+        <h2>변환된 텍스트</h2>
+        {% if transcript_text %}
+        <div class="result">
+            <textarea>{{ transcript_text }}</textarea>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Output 영역 -->
+    <div class="column">
+        <h2>점자 변환 결과</h2>
+        {% if braille_text %}
+        <div class="result">
+            <p>{{ braille_text }}</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 점자 변환 버튼 -->
+<div class="braille-button-section">
+    <form action="/convert_to_braille" method="post">
+        <button type="submit">점자 변환</button>
+    </form>
+</div>
+
+</body>
+</html>

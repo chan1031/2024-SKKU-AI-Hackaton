@@ -1,2 +1,2 @@
 # AI-Education-Hackaton
-SKKU 202 AI-Education_Hackaton
+SKKU 2024 AI-Education_Hackaton

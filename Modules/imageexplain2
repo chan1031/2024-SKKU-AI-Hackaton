@@ -1,0 +1,66 @@
+import requests
+
+# Azure Computer Vision API 키 및 엔드포인트 설정
+vision_subscription_key = "b01a0d89b8f846c588b914066dfac8ee"
+vision_endpoint = "https://koreacentral.api.cognitive.microsoft.com/vision/v3.1/analyze"
+
+# Azure Translator Text API 키 및 엔드포인트 설정
+translator_subscription_key = "17cbe91caf264211984868a952a9c00a"
+translator_endpoint = "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0"
+
+# 이미지 URL
+image_url = "https://images.freeimages.com/images/premium/previews/2093/20938624-mountain-biker.jpg"
+
+# 이미지 분석 요청
+vision_headers = {
+    'Ocp-Apim-Subscription-Key': vision_subscription_key,
+    'Content-Type': 'application/json',
+}
+vision_params = {
+    'visualFeatures': 'Description',
+}
+vision_data = {
+    "url": image_url
+}
+
+# Computer Vision API 호출
+vision_response = requests.post(vision_endpoint, headers=vision_headers, params=vision_params, json=vision_data)
+vision_analysis = vision_response.json()
+
+# 이미지 설명을 추출
+image_description = vision_analysis["description"]["captions"][0]["text"]
+#print("영어 설명:", image_description)
+
+# Translator API를 사용하여 한글로 번역
+translator_headers = {
+    'Ocp-Apim-Subscription-Key': translator_subscription_key,
+    'Content-Type': 'application/json',
+    'Ocp-Apim-Subscription-Region': 'koreacentral'  # Translator 리소스가 있는 지역
+}
+translator_data = [{
+    "text": image_description
+}]
+translator_params = {
+    'to': 'ko'  # 한국어로 번역
+}
+
+# Translator API 호출
+translator_response = requests.post(translator_endpoint, headers=translator_headers, json=translator_data, params=translator_params)
+translator_result = translator_response.json()
+
+# 번역된 결과 출력
+translated_text = translator_result[0]["translations"][0]["text"]
+def convert_to_respectful(text):
+    if text.endswith('다'):
+        text = text.replace('다', '입니다.')
+    elif text.endswith('다.'):
+        text = text.replace('다.', '입니다.')
+    else:
+        text += '입니다.'
+    return text
+
+# 존댓말로 변환된 텍스트
+respectful_text = convert_to_respectful(translated_text)
+
+print("설명:", respectful_text)
+#print("한글 설명:", translated_text)

@@ -1,0 +1,220 @@
+/* 전체 화면 설정 */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: linear-gradient(to bottom, #000000, #0b3d30 60%);
+    color: #f1f1f1;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* 로고 컨테이너 */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 120px;
+    height: auto;
+}
+
+/* 페이지 타이틀 */
+h1 {
+    font-size: 3rem;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 파일 업로드 컨테이너 */
+.upload-container {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    margin-bottom: 40px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 파일 업로드 필드와 레이블 */
+.input-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.custom-file-input {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.custom-file-input input[type="file"] {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+
+.custom-file-input label {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Adds a shadow */
+    transition: all 0.3s; /* Smooth transition for hover effect */
+}
+
+.custom-file-input label:hover {
+    background-color: #45a049; /* Darker green background on hover */
+}
+
+/* Styling the display of the selected file name */
+.custom-file-input .file-name {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 16px;
+    color: #ccc;
+    margin-left: 10px;
+}
+
+/* 전체 업로드 영역 중앙 정렬 */
+.input-group {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button, button {
+    background-color: #1a7f74; /* Consistent button color */
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-block;
+    width: 200px; /* Ensuring all buttons are of the same width */
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+}
+
+.button:hover, button:hover {
+    background-color: #146b61;
+}
+
+/* 좌우로 input과 output을 나누는 컨테이너 */
+.container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 40px;
+}
+
+/* 좌우에 있는 컬럼 설정 (Input, Output) */
+.column {
+    width: 48%;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* 변환된 텍스트 및 점자 변환 결과 박스 */
+.result {
+    width: 90%;
+    padding: 20px;
+    margin: 0 auto;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background-color: #1f1f1f;
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    color: #ffffff;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.4);
+    height: 250px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+/* 점자 변환 버튼 */
+.braille-button-section {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* 로딩 중 표시 */
+#loading {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+    color: #ffffff;
+    font-size: 18px;
+}
+
+/* 반응형 디자인 */
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .column {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    button {
+        width: 100%;
+    }
+}
+
+/* 이미지 업로드 섹션 설정 */
+#editorSection {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+/* 이미지 삽입 버튼을 Choose File 아래로 배치 */
+.input-group button {
+    margin-top: 10px;
+    background-color: #1a7f74;
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    max-width: 200px;
+    text-align: center;
+}
+
+.input-group button:hover {
+    background-color: #146b61;
+}

@@ -1,0 +1,22 @@
+# whisper 사용
+
+# requirements
+    # pip install git+https://github.com/openai/whisper.git
+    # pip3 install torch torchvision torchaudio 
+    # pip install git+https://github.com/openai/whisper.git  
+    # ffmpeg 다운로드 - https://www.gyan.dev/ffmpeg/builds/ 에서 ffmpeg-release-essentials.7z 파일 다운받은 뒤 윈도우 환경변수 path에 /bin 경로 넣어주기 
+
+import whisper
+
+# Whisper 모델 로드 (tiny, base, small, medium, large)
+model = whisper.load_model("base")
+
+# 변환할 음성 파일 경로
+audio_file = "D:/bbc_korea_radio.mp3"
+
+# 음성 파일을 텍스트로 변환
+result = model.transcribe(audio_file, language="ko")
+
+# 결과 출력
+print("Transcription:")
+print(result["text"])

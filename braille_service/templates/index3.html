@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>한글 강의 텍스트 및 점자 변환 서비스</title>
+    <link rel="stylesheet" type="text/css" href="style3.css">
+</head>
+<body>
+
+    <!-- 로고 -->
+    <div class="logo-container">
+        <img src="logo_new.png" alt="로고" class="logo">
+    </div>
+
+    <!-- 페이지 타이틀 -->
+    <h1>한글 강의 텍스트 및 점자 변환 서비스</h1>
+
+    <!-- 파일 업로드 컨테이너 -->
+    <div class="upload-container">
+        <form action="/upload" method="post" enctype="multipart/form-data" onsubmit="showLoading();">
+            <div class="input-group">
+                <label for="file" class="button">강의 MP3 파일 업로드: Choose File</label>
+                <input type="file" id="file" name="file" accept=".mp3" style="display: none;" required>
+            </div>
+            <button type="submit">텍스트로 변환</button>
+        </form>
+
+        <!-- 이미지 업로드 -->
+        {% if show_editor %}
+        <div id="editorSection">
+            <div class="input-group">
+                <label for="imageFile" class="button">점자로 변환할 이미지 업로드: Choose File</label>
+                <input type="file" id="imageFile" accept="image/*" style="display: none;">
+                <button type="button" onclick="insertImage()" class="button">이미지 삽입</button>
+            </div>
+            <div class="result">
+                <h2>편집 영역:</h2>        
+                <div id="editor" contenteditable="true">
+                    {% if transcript_text %}
+                        {{ transcript_text | safe }}
+                    {% endif %}
+                </div>
+            </div>
+            <form action="/convert_to_braille" method="post" onsubmit="return getContent()">
+                <input type="hidden" id="hiddenContent" name="text">
+                <button type="submit" class="button">점자로 변환</button>
+            </form>
+        </div>
+        {% endif %}
+    
+        {% if braille_text %}
+        <div class="result">
+            <h2>점자 변환 결과:</h2>
+            <div>{{ braille_text | safe }}</div>
+        </div>
+        {% endif %}
+    
+    
+<!-- 점자 변환 버튼 -->
+<div class="braille-button-section">
+    <form action="/convert_to_braille" method="post" onsubmit="showLoading();">
+        <button type="submit">점자 변환</button>
+    </form>
+</div>
+
+<!-- 로딩 중 표시 -->
+<div id="loading" style="display: none;">
+    <p>로딩 중입니다. 잠시만 기다려 주세요...</p>
+</div>
+
+    <script>
+        function insertImage() {
+            const fileInput = document.getElementById('imageFile');
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = "User uploaded image";
+                img.style.maxWidth = "100%";
+                img.style.height = "auto";
+
+                const editor = document.getElementById('editor');
+                const selection = window.getSelection();
+                const range = selection.getRangeAt(0);
+                range.insertNode(img);
+                range.collapse(false);
+                selection.removeAllRanges();
+                selection.addRange(range);
+                editor.focus();
+            };
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        function getContent() {
+            const editor = document.getElementById('editor');
+            document.getElementById('hiddenContent').value = editor.innerHTML;
+            return true;
+        }
+    </script>
+</body>
+</html>

@@ -9,10 +9,10 @@ Our service generates braille substitute materials for visually impaired student
 ![architecture](https://github.com/user-attachments/assets/c8fc6718-a731-42b1-9b88-e039b767617c)
 
 # 2. Skills
-AWS Lambda : Connect aws polly, transcriber
-AWS Ec2, Flask : Web Server
-S3: Store uploaded mp4 file and transcripts
-AWS polly: TTS
+AWS Lambda : Connect aws polly, transcriber\n
+AWS Ec2, Flask : Web Server\n
+S3: Store uploaded mp4 file and transcripts\n
+AWS polly: TTS\n
 AWS transcriber: convert audio to text
 GPT 3.5 api : Summarized text
 Azure Computer Vision api: describe image

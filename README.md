@@ -19,4 +19,4 @@ Azure Computer Vision api: describe image
 API Gateway : URL of image's described text  
 
 # 3.Awards
-## 2024 SKKU AI-Hackaton Silver Awards
+-2024 SKKU AI-Hackaton Silver Awards

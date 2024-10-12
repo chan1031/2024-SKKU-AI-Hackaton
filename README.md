@@ -10,7 +10,7 @@ Our service generates braille substitute materials for visually impaired student
 
 # 2. Skills
 AWS Lambda : Connect aws polly, transcriber  
-AWS Ec2, Flask : Web Server  
+AWS Ec2(t2.medium), Flask : Web Server  
 S3: Store uploaded mp4 file and transcripts  
 AWS polly: TTS  
 AWS transcriber: convert audio to text  

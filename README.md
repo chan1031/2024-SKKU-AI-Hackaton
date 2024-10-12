@@ -18,5 +18,10 @@ GPT 3.5 api : Summarized text
 Azure Computer Vision api: describe image  
 API Gateway : URL of image's described text  
 
-# 3.Awards
+# 3.Info
+s3 bucket: skkuhackatons3 (/uploads, /transcripts)
+api gateway: http://address/echo/{?}
+
+# 4.Awards
 -2024 SKKU AI-Hackaton Silver Awards
+

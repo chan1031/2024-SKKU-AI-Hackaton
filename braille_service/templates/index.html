@@ -3,69 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>한글 강의 텍스트 및 점자 변환 서비스</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1 {
-            color: #4CAF50;
-            text-align: center;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .input-group input[type="file"] {
-            display: inline-block;
-            width: 70%;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #editor {
-            border: 1px solid #ccc;
-            min-height: 200px;
-            padding: 10px;
-            margin-top: 20px;
-            text-align: justify;
-        }
-        .result {
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style2.css') }}">
 </head>
 <body>
-    <h1>한글 강의 텍스트 및 점자 변환 서비스</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <div class="input-group">
-            <label for="file">강의 MP3 파일 업로드:</label>
-            <input type="file" name="file" id="file" accept=".mp3" required>
-        </div>
-        <button type="submit">텍스트로 변환</button>
-    </form>
+    <!-- 로고 영역 -->
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='logo_new.png') }}" alt="Service Logo" class="logo">
+    </div>
 
+    <!-- 페이지 제목 -->
+    <h1>한글 강의 텍스트 및 점자 변환 서비스</h1>
+
+    <!-- 파일 업로드 섹션 -->
+    <div class="upload-container">
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="input-group custom-file-input">
+                <label class="file-label" for="file">강의 MP3 파일 업로드</label>
+                <input type="file" name="file" id="file" accept=".mp3" required>
+            </div>
+            <button type="submit">텍스트로 변환</button>
+        </form>
+    </div>
+
+    <!-- 편집 섹션 (MP3 파일 업로드 후 나타남) -->
     {% if show_editor %}
-    <div id="editorSection">
+    <div id="editorSection" class="container">
         <div class="input-group">
-            <label for="imageFile">점자로 변환할 이미지 업로드:</label>
+            <label class="file-label" for="imageFile">점자로 변환할 이미지 업로드</label>
             <input type="file" id="imageFile" accept="image/*">
             <button type="button" onclick="insertImage()">이미지 삽입</button>
         </div>
-        <div class="result">
+        <div class="column">
             <h2>편집 영역:</h2>
             <div id="editor" contenteditable="true">
                 {% if transcript_text %}
@@ -75,18 +43,40 @@
         </div>
         <form action="/convert_to_braille" method="post" onsubmit="return getContent()">
             <input type="hidden" id="hiddenContent" name="text">
-            <button type="submit">점자로 변환</button>
+            <button type="submit" class="button">점자로 변환</button>
         </form>
     </div>
     {% endif %}
 
-    {% if braille_text %}
-    <div class="result">
-        <h2>점자 변환 결과:</h2>
-        <div>{{ braille_text | safe }}</div>
+    <!-- 변환된 점자 텍스트, 점자 이미지, 그리고 QR 코드 표시 -->
+    {% if braille_text or braille_image or qr_codes %}
+    <div class="result-container">
+        {% if braille_text %}
+        <div class="braille-text">
+            <h2>점자 변환 텍스트:</h2>
+            <p>{{ braille_text | safe }}</p>
+        </div>
+        {% endif %}
+
+        {% if braille_image %}
+        <div class="braille-image">
+            <h2>점자 이미지:</h2>
+            <img src="data:image/png;base64,{{ braille_image }}" alt="Braille Image"/>
+        </div>
+        {% endif %}
+
+        {% if qr_codes %}
+        <div class="qr-code">
+            <h2>⠟⠗ ⠠⠉⠕⠙⠑:</h2> <!-- "QR 코드"를 점자로 표시 -->
+            {% for qr_code in qr_codes %}
+                <img src="{{ qr_code }}" alt="QR Code Image">
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
     {% endif %}
 
+    <!-- 스크립트 영역 -->
     <script>
         function insertImage() {
             const fileInput = document.getElementById('imageFile');

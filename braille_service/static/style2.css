@@ -1,134 +1,152 @@
 /* 전체 화면 설정 */
 body {
     font-family: 'Noto Sans KR', sans-serif;
-    background: linear-gradient(to bottom, #000000, #0b3d30 60%); /* 위쪽에서 검정색 시작, 진녹색이 더 위에서 나타남 */
+    background: linear-gradient(to bottom, #000000, #0b3d30 60%);
     color: #f1f1f1;
     margin: 0;
     padding: 20px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     flex-direction: column;
     min-height: 100vh;
     box-sizing: border-box;
 }
 
-/* 로고 이미지 맨 위 중앙 정렬 */
-.logo {
-    position: relative; /* 상대적 위치 사용 */
-    margin-top: 10px; /* 위쪽에 여백 추가 */
-    margin-bottom: 40px; /* 아래에 여백 추가 */
-    width: 150px; /* 로고 크기 */
-    height: auto;
-    z-index: 1000;
-    /* 그림자 효과 */
-    filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.7));
+/* 로고 컨테이너 */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
-/* 상단 파일 업로드 영역 */
-.upload-section {
+.logo {
+    width: 120px;
+    height: auto;
+}
+
+/* 페이지 타이틀 */
+h1 {
+    font-size: 3rem;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 파일 업로드 컨테이너 */
+.upload-container {
     width: 100%;
     max-width: 600px;
     text-align: center;
     margin-bottom: 40px;
-    background-color: rgba(0, 0, 0, 0.7); /* 투명도 추가 */
+    background-color: rgba(0, 0, 0, 0.7);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* 버튼 사이의 간격 추가 */
 }
 
-.upload-section input[type="file"] {
-    margin-top: 20px;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #333;
-    background-color: #2a2a2a;
+/* 파일 업로드 필드와 레이블 */
+.input-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
     color: #ffffff;
-    width: 100%;
-    max-width: 400px;
 }
 
-.upload-section button {
-    background-color: #1a7f74;
+.custom-file-input {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.custom-file-input input[type="file"] {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+
+.custom-file-input label {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Adds a shadow */
+    transition: all 0.3s; /* Smooth transition for hover effect */
+}
+
+.custom-file-input label:hover {
+    background-color: #45a049; /* Darker green background on hover */
+}
+
+/* Styling the display of the selected file name */
+.custom-file-input .file-name {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 16px;
+    color: #ccc;
+    margin-left: 10px;
+}
+
+/* 전체 업로드 영역 중앙 정렬 */
+.input-group {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button, button {
+    background-color: #1a7f74; /* Consistent button color */
     color: white;
-    padding: 12px 25px;
+    padding: 10px 20px;
     font-size: 18px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    width: 100%;
-    max-width: 400px;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
+    display: inline-block;
+    width: 200px; /* Ensuring all buttons are of the same width */
+    text-align: center;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+    margin-top: 10px; /* 버튼 간격 추가 */
 }
 
-.upload-section button:hover {
+.button:hover, button:hover {
     background-color: #146b61;
 }
 
-/* 전체 컨테이너 */
+/* 좌우로 input과 output을 나누는 컨테이너 */
 .container {
     display: flex;
     justify-content: space-between;
     gap: 20px;
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto; /* 수평 중앙 정렬 */
-    background-color: rgba(0, 0, 0, 0.7); /* 투명도 추가 */
+    margin-top: 40px;
+}
+
+/* 좌우에 있는 컬럼 설정 (Input, Output) */
+.column {
+    width: 48%;
+    background-color: rgba(0, 0, 0, 0.7);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* 좌측, 우측 컬럼 설정 */
-.column {
-    width: 48%;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* 중앙 정렬 추가 */
-    justify-content: flex-start; /* 상단에 맞춤 */
-}
-
-/* 제목 스타일 (좌우 영역 제목) */
-h2 {
-    color: #ffffff;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    text-align: center; /* 텍스트 중앙 정렬 */
-}
-
-/* 텍스트 필드 */
-textarea {
-    width: 100%; /* 박스의 너비를 100%로 설정 */
-    max-width: 600px; /* 최대 너비 설정 */
-    height: 250px;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #333;
-    font-size: 16px;
-    resize: none;
-    background-color: #2a2a2a;
-    color: #ffffff;
-    box-shadow: inset 0px 3px 8px rgba(0, 0, 0, 0.4);
-    transition: all 0.3s ease;
-    text-align: center; /* 텍스트 중앙 정렬 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-y: auto; /* 스크롤 설정 */
-}
-
-textarea:focus {
-    border-color: #6aa89e;
-    box-shadow: 0 0 8px rgba(106, 168, 158, 0.5);
-}
-
-/* 결과 박스 스타일 */
+/* 변환된 텍스트 및 점자 변환 결과 박스 */
 .result {
-    width: 90%; /* 박스의 너비를 100%로 설정 */
-    max-width: 600px; /* 최대 너비 설정 */
+    width: 90%;
     padding: 20px;
+    margin: 0 auto;
     border: 1px solid #333;
     border-radius: 8px;
     background-color: #1f1f1f;
@@ -138,36 +156,23 @@ textarea:focus {
     color: #ffffff;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.4);
     height: 250px;
-    overflow-y: auto; /* 스크롤 설정 */
-    text-align: center; /* 텍스트 중앙 정렬 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    overflow-y: auto;
+    text-align: left;
 }
 
-/* 점자 변환 버튼 (화면 아래 중앙에 배치) */
+/* 점자 변환 버튼 */
 .braille-button-section {
-    width: 100%;
     text-align: center;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
-.braille-button-section button {
-    background-color: #1a7f74;
-    color: white;
-    padding: 12px 25px;
+/* 로딩 중 표시 */
+#loading {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+    color: #ffffff;
     font-size: 18px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 100%;
-    max-width: 400px;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.braille-button-section button:hover {
-    background-color: #146b61;
 }
 
 /* 반응형 디자인 */
@@ -185,4 +190,32 @@ textarea:focus {
     button {
         width: 100%;
     }
+}
+
+/* 이미지 업로드 섹션 설정 */
+#editorSection {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+/* 이미지 삽입 버튼을 Choose File 아래로 배치 */
+.input-group button {
+    margin-top: 10px;
+    background-color: #1a7f74;
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    max-width: 200px;
+    text-align: center;
+}
+
+.input-group button:hover {
+    background-color: #146b61;
 }
